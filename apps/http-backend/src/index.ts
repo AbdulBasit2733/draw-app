@@ -12,7 +12,7 @@ app.post('/signup', async (req, res) => {
                 success:false,
                 message:errorMessages
             })
-            return
+            return;
         }
 
     } catch (error) {
@@ -33,7 +33,7 @@ app.post('/signin', (req, res) => {
                 success:false,
                 message:errorMessages
             })
-            return
+            return;
         }
 
     } catch (error) {
@@ -54,7 +54,7 @@ app.post('/create-room',Middleware, (req, res) => {
                 success:false,
                 message:errorMessages
             })
-            return
+            return;
         }
 
     } catch (error) {
