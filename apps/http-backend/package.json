@@ -3,22 +3,25 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild ./src/index.ts --bundle --platform=node --target=node20 --outdir=dist",
-    "start": "node ./dist/index.js",
+    "build": "esbuild ./src/index.ts --bundle --platform=node --target=node20 --outdir=dist --external:bcrypt --external:mock-aws-s3 --external:aws-sdk --external:nock --loader:.html=text",
+    "start": "nodemon ./dist/index.js",
     "dev": "npm run build && npm run start"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
-    "@repo/backend-common":"workspace:*",
-    "@repo/common":"workspace:*"
+    "@repo/backend-common": "workspace:*",
+    "@repo/common": "workspace:*",
+    "@repo/db": "workspace:*",
+    "@repo/typescript-config": "workspace:*"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
+    "bcryptjs": "^2.4.3",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2"
   }
