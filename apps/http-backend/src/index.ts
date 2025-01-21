@@ -128,7 +128,7 @@ app.post("/create-room", Middleware, async (req: AuthRequest, res) => {
     if (!parsedData.success) {
       const errorMessages = parsedData.error.errors.map((err) => err.message);
       res.status(300).json({
-      yuhyuygjhjhj  success: false,
+        success: false,
         message: errorMessages,
       });
       return;
@@ -189,6 +189,19 @@ app.get("/chats/:roomId", async (req, res) => {
     messages: messages,
   });
 });
+
+app.get("/room/:slug", async (req, res) => {
+  const slug = req.params.slug;
+  const room = await prismaClient.room.findFirst({
+    where:{
+      slug
+    }
+  });
+  res.json({
+    success:true,
+    room:room
+  })
+})
 
 app.listen(5000, () => {
   console.log("App is running on port 5000");
