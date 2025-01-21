@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -b",
+    "build": "esbuild ./src/index.ts --bundle --platform=node --target=node20 --outdir=dist --external:mock-aws-s3 --external:aws-sdk --external:nock --loader:.html=text",
     "start": "nodemon ./dist/index.js",
     "dev": "npm run build && npm run start"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@repo/backend-common":"workspace:*"
+    "@repo/backend-common":"workspace:*",
+    "@repo/db":"workspace:*"
   },
   "keywords": [],
   "author": "",
