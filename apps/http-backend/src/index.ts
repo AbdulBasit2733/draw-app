@@ -9,11 +9,11 @@ import { prismaClient } from "@repo/db/client";
 const bcrypt = require("bcryptjs");
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "@repo/backend-common/config";
-import cors from 'cors'
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 app.post("/signup", async (req, res) => {
   try {
@@ -146,10 +146,8 @@ app.post("/create-room", Middleware, async (req: AuthRequest, res) => {
         message: "Room Already Exists",
       });
       return;
-
-
     }
-    await prismaClient.room.create({
+    const newRoom = await prismaClient.room.create({
       data: {
         slug: parsedData.data.name,
         adminId: userId,
@@ -158,6 +156,7 @@ app.post("/create-room", Middleware, async (req: AuthRequest, res) => {
     res.status(200).json({
       success: true,
       message: "Room Created Successfully",
+      RoomId: newRoom.id,
     });
   } catch (error) {
     console.log(error);
@@ -195,15 +194,15 @@ app.get("/chats/:roomId", async (req, res) => {
 app.get("/room/:slug", async (req, res) => {
   const slug = req.params.slug;
   const room = await prismaClient.room.findFirst({
-    where:{
-      slug
-    }
+    where: {
+      slug,
+    },
   });
   res.json({
-    success:true,
-    room:room
-  })
-})
+    success: true,
+    room: room,
+  });
+});
 
 app.listen(5000, () => {
   console.log("App is running on port 5000");
