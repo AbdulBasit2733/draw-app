@@ -3,23 +3,29 @@ import useWindowDimensions from "@/hooks/useWindowDimensions";
 import React, { useEffect, useRef, useState } from "react";
 import IconButton from "./IconButton";
 import { Circle, RectangleHorizontal, Triangle } from "lucide-react";
+import { Game } from "@/draw/Game";
 
-type Shape = "circle" | "rectangle" | "triangle";
+export type Tool = "circle" | "rectangle" | "triangle" | "pencil";
 
 const Canvas = ({ roomId, socket }: { roomId: string; socket: WebSocket }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [selectedTool, setSelectedTool] = useState<Shape>("circle");
+  const [game, setGame] = useState<Game>()
+  const [selectedTool, setSelectedTool] = useState<Tool>("circle");
   const { height, width } = useWindowDimensions();
   useEffect(() => {
     if (canvasRef.current) {
-      initDraw(canvasRef.current, roomId, socket);
+      const g = new Game(canvasRef.current, roomId, socket)
+      setGame(g);
+      return () => {
+      g.destroy()
+      }
     }
+    
   }, [canvasRef]);
 
   useEffect(() => {
-    //@ts-ignore
-    window.selectedTool = selectedTool
-  },[selectedTool])
+    game?.setTool(selectedTool)
+  },[selectedTool, game])
 
   return (
     <div className=" bg-slate-950 h-[100vh] overflow-hidden">
@@ -35,7 +41,7 @@ function TopBar({
   selectedTool,
   setSelectedTool,
 }: {
-  selectedTool: Shape;
+  selectedTool:  Tool;
   setSelectedTool: () => void;
 }) {
   return (
