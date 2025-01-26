@@ -1,26 +1,6 @@
 import axios from "axios";
 
-type Shape =
-  | {
-      type: "rectangle";
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-    }
-  | {
-      type: "circle";
-      centerX: number;
-      centerY: number;
-      radius: number;
-    }
-  | {
-      type: "triangle";
-      startX: number;
-      startY: number;
-      endX: number;
-      endY: number;
-    };
+
 
 export const initDraw = async (
   canvas: HTMLCanvasElement,
@@ -36,14 +16,7 @@ export const initDraw = async (
   let existingShapes: Shape[] = await getExistingShapes(roomId);
   // let existingShapes: Shape[] = [];
 
-  socket.onmessage = (event) => {
-    const message = JSON.parse(event.data);
-    if (message.type == "chat") {
-      const parsedShape = JSON.parse(message.message);
-      existingShapes.push(parsedShape.shape);
-      clearCanvas(existingShapes, canvas, ctx);
-    }
-  };
+  
 
   clearCanvas(existingShapes, canvas, ctx);
 
@@ -147,12 +120,4 @@ function clearCanvas(
   });
 }
 
-const getExistingShapes = async (roomId: string) => {
-  const res = await axios.get(`${`http://localhost:5000/chats/${roomId}`}`);
-  const messages = res.data.messages;
-  const shapes = messages.map((x: { message: string }) => {
-    const messageData = JSON.parse(x.message);
-    return messageData.shape;
-  });
-  return shapes;
-};
+

@@ -9,23 +9,22 @@ export type Tool = "circle" | "rectangle" | "triangle" | "pencil";
 
 const Canvas = ({ roomId, socket }: { roomId: string; socket: WebSocket }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [game, setGame] = useState<Game>()
+  const [game, setGame] = useState<Game>();
   const [selectedTool, setSelectedTool] = useState<Tool>("circle");
   const { height, width } = useWindowDimensions();
   useEffect(() => {
     if (canvasRef.current) {
-      const g = new Game(canvasRef.current, roomId, socket)
+      const g = new Game(canvasRef.current, roomId, socket);
       setGame(g);
       return () => {
-      g.destroy()
-      }
+        g.destroy();
+      };
     }
-    
   }, [canvasRef]);
 
   useEffect(() => {
-    game?.setTool(selectedTool)
-  },[selectedTool, game])
+    game?.setTool(selectedTool);
+  }, [selectedTool, game]);
 
   return (
     <div className=" bg-slate-950 h-[100vh] overflow-hidden">
@@ -41,7 +40,7 @@ function TopBar({
   selectedTool,
   setSelectedTool,
 }: {
-  selectedTool:  Tool;
+  selectedTool: Tool;
   setSelectedTool: () => void;
 }) {
   return (
